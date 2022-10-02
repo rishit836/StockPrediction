@@ -8,10 +8,6 @@ def preprocess_and_predict(path):
     data = pd.read_csv(path)
     columns = data.columns
     columns = columns[1:]
-    for i in columns:
-        ms = MinMaxScaler()
-        conversion =np.array( data[i]).reshape(-1, 1)
-        data[i] = ms.fit_transform(conversion)
     df = data.T
     df.columns = data.ticker.to_list()
     df = df.iloc[1:, :]
@@ -24,10 +20,16 @@ def preprocess_and_predict(path):
             out_df = pd.DataFrame(temp_lst)
             max_num = out_df.max()
             preds = model.predict(out_df)
-            if int(preds.max() - max_num()) > 0:
-                return_dict[str(i) + "profit"] = "postive"
+            if preds.max() > preds.mean():
+                print('profit')
+                return_dict[str(i)] = "positive"
+            elif ((preds.mean() - preds.max()) < .02): # Risk Factor
+                print("profit")
+                return_dict[str(i)] = "positive"
             else:
-                return_dict[str(i) + "profit"] = "negative"
+                print("loss")
+                return_dict[str(i)] = "negative"
+
                 
         temp_lst = []
 
