@@ -24,11 +24,10 @@ def preprocess_and_predict(path):
             out_df = pd.DataFrame(temp_lst)
             max_num = out_df.max()
             preds = model.predict(out_df)
-            return_dict[str(i)] = preds
-            # if int(preds.max() - max_num()) > 0:
-            #     return_dict[str(i) + "profit"] = "postive"
-            # else:
-            #     return_dict[str(i) + "profit"] = "negative"
+            if int(preds.max() - max_num()) > 0:
+                return_dict[str(i) + "profit"] = "postive"
+            else:
+                return_dict[str(i) + "profit"] = "negative"
                 
         temp_lst = []
 
